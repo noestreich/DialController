@@ -1,0 +1,6 @@
+.build/
+*.o
+*.d
+DialController.app/
+diag
+diag.swift

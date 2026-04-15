@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <!-- No Dock icon – menu bar only -->
+    <key>LSUIElement</key>
+    <true/>
+
+    <!-- Required for Input Monitoring (HID seize) -->
+    <key>NSInputMonitoringUsageDescription</key>
+    <string>Dial Controller liest Eingaben des Ulanzi Dial, um Shortcuts auszulösen.</string>
+
+    <!-- Required for CGEventPost (simulating keypresses) -->
+    <key>NSAppleEventsUsageDescription</key>
+    <string>Dial Controller sendet Tastatureingaben für konfigurierte Shortcuts.</string>
+
+    <key>CFBundleIdentifier</key>
+    <string>de.oestreich.DialController</string>
+    <key>CFBundleName</key>
+    <string>Dial Controller</string>
+    <key>CFBundleVersion</key>
+    <string>1</string>
+    <key>CFBundleShortVersionString</key>
+    <string>1.0</string>
+    <key>LSMinimumSystemVersion</key>
+    <string>13.0</string>
+</dict>
+</plist>
