@@ -1,8 +1,10 @@
 # Dial Controller
 
-A lightweight macOS menu bar app that turns the **Ulanzi Dial D100H** into a fully customisable shortcut launcher.
+A lightweight macOS menu bar app that turns the **[Ulanzi Dial D100H](https://www.ulanzi.com/collections/studio-setup/products/d100h-dial-creative-controller-i003)** into a fully customisable shortcut launcher.
 
 ![macOS 13+](https://img.shields.io/badge/macOS-13%2B-blue) ![Swift](https://img.shields.io/badge/Swift-5.9-orange)
+
+![Dial Controller screenshot](docs/screenshot.png)
 
 ## What it does
 
