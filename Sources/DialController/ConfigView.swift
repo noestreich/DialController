@@ -4,6 +4,9 @@ struct ConfigView: View {
     @EnvironmentObject var store: MappingStore
     @EnvironmentObject var hid: HIDManager
 
+    /// Holds the shortcut being entered during the "phase 2" learn flow.
+    @State private var pendingShortcut: KeyShortcut? = nil
+
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
             header
@@ -16,7 +19,6 @@ struct ConfigView: View {
             Divider()
             footer
         }
-        .frame(width: 420)
     }
 
     // MARK: - Subviews
@@ -66,27 +68,51 @@ struct ConfigView: View {
     }
 
     private var footer: some View {
-        HStack {
-            Button(hid.isLearning ? "Abbrechen" : "Button lernen") {
-                hid.isLearning = !hid.isLearning
-            }
-            .foregroundColor(hid.isLearning ? .red : .accentColor)
-
+        HStack(spacing: 10) {
+            // Left: cancel / learn button
             if hid.isLearning {
-                Text("Drücke einen Button…")
+                Button("Abbrechen") {
+                    hid.isLearning = false   // didSet clears pendingLearnId
+                    pendingShortcut = nil
+                }
+                .foregroundColor(.red)
+            } else {
+                Button("Button lernen") {
+                    hid.isLearning = true
+                }
+                .foregroundColor(.accentColor)
+            }
+
+            // Phase 1: waiting for a Dial button press
+            if hid.isLearning && hid.pendingLearnId == nil {
+                Text("Drücke einen Button am Dial…")
                     .font(.caption)
                     .foregroundStyle(.secondary)
                     .transition(.opacity)
             }
 
-            Spacer()
+            // Phase 2: Dial button identified, now capture keyboard shortcut
+            if let pendingId = hid.pendingLearnId {
+                Text("Tastenkombination:")
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+                ShortcutRecorder(shortcut: $pendingShortcut, autoStart: true)
+                    .onChange(of: pendingShortcut) { sc in
+                        guard let sc else { return }
+                        store.upsert(id: pendingId, shortcut: sc)
+                        hid.isLearning = false   // clears pendingLearnId via didSet
+                        pendingShortcut = nil
+                    }
+            }
 
+            Spacer()
             Button("Beenden") { NSApp.terminate(nil) }
                 .foregroundStyle(.secondary)
         }
         .padding(.horizontal, 16)
         .padding(.vertical, 12)
         .animation(.easeInOut, value: hid.isLearning)
+        .animation(.easeInOut, value: hid.pendingLearnId)
     }
 }
 

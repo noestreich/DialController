@@ -5,14 +5,9 @@ struct DialControllerApp: App {
     @NSApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
 
     var body: some Scene {
-        // Pure menu bar app – no regular window
-        MenuBarExtra {
-            ConfigView()
-                .environmentObject(MappingStore.shared)
-                .environmentObject(HIDManager.shared)
-        } label: {
-            Label("Dial", systemImage: "dial.low.fill")
-        }
-        .menuBarExtraStyle(.window)
+        // All UI is driven by AppDelegate via NSStatusItem + NSPopover.
+        // This empty Settings scene satisfies the Swift compiler requirement
+        // for at least one scene in @main App structs.
+        Settings { EmptyView() }
     }
 }
